@@ -9,7 +9,7 @@ const normalize = (
   const b = newRange[1];
   const minX = xRange[0];
   const maxX = xRange[1];
-  const res = a + ((x - minX) * (b - a)) / (maxX - minX);
+  const res = a + ((x - minX) * (b - a)) / (maxX - minX); // normalization algorithm
   return res;
 };
 

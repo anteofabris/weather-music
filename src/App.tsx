@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import * as Tone from "tone";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import { testForecastData, medellin } from "../testForecast.ts";
+import { brooklyn, medellin, zurich } from "../testForecast.ts";
 import axios from "axios";
 import {
   getAttackLength,
@@ -59,7 +59,7 @@ function makeMembraneSynths(num: number) {
   }
   return obj;
 }
-let oscillators = makeOscillators(12, 0.2)
+let oscillators = makeOscillators(12, 0.2);
 function App() {
   Tone.Transport.start();
   const sineTypesArr = [
@@ -111,14 +111,29 @@ function App() {
     tucson: "32.24521248020302,-110.96200948455281",
     zurich: "47.36005276342892,8.550020046147731",
     athensGreece: "37.973105059118026,23.72582305173767",
+    lisbon: "38.74205040815735,-9.158257672851823",
+    unicamp: "-22.81708446102991,-47.06976315462146",
+    missoula: '46.87326889538417,-113.99859872564059',
+    penicina: "44.80768485089671,9.340974847547246",
+    dikoma: "-2.239655926016569,23.358729894245982",
+    finke: '-25.582963962482815,134.5766010717347'
   };
 
+  function getRandomInRange(from: number, to: number, fixed: number) {
+    return (Math.random() * (to - from) + from).toFixed(fixed);
+    // .toFixed() returns string, so ' * 1' is a trick to convert to number
+}
+const longitude = getRandomInRange(-180, 180, 14)
+const latitude = getRandomInRange(1, 89, 14)
+const randomCoord: string = `${latitude},${longitude}`
+
   function getWeather() {
+    console.log("current weather data: ", medellin);
     const options = {
       method: "GET",
       url: `http://api.weatherapi.com/v1/forecast.json?key=${
         import.meta.env.VITE_WEATHER_API_KEY
-      }&q=${zipcodeObject.athensGreece}&aqi=yes&days=1&hour=1`,
+      }&q=${zipcodeObject.dikoma}&aqi=yes&days=1&hour=1`,
     };
 
     if (!dataFetched)
@@ -199,8 +214,8 @@ function App() {
         Tone.Transport.start();
         (piano as any)[k].start();
         // loop.start(0);
-        // signal.rampTo(partial, 10 , 0);
-        signal.rampTo(partial, 840, 0);
+        // signal.rampTo(partial, 10 , 0); // 10 second "performance"
+        signal.rampTo(partial, 3600, 0);
       }
     };
     // play all the oscillators
