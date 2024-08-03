@@ -467,7 +467,6 @@ export const testLocations = {
       ],
     },
   },
-
   finke: {
     location: {
       name: "Finke",
@@ -611,7 +610,6 @@ export const testLocations = {
       ],
     },
   },
-
   dikoma: {
     location: {
       name: "Dikoma",
@@ -755,7 +753,6 @@ export const testLocations = {
       ],
     },
   },
-
   minwakh: {
     location: {
       name: "Minwakh",
@@ -899,7 +896,6 @@ export const testLocations = {
       ],
     },
   },
-
   alert: {
     location: {
       name: "Alert",
@@ -1043,7 +1039,6 @@ export const testLocations = {
       ],
     },
   },
-
   bolsheLaryakshiye: {
     location: {
       name: "Bolshe-Laryakshiye",
@@ -1187,7 +1182,6 @@ export const testLocations = {
       ],
     },
   },
-
   agpamiut: {
     location: {
       name: "Agpamiut",

@@ -96,8 +96,8 @@ function App() {
     "sine31",
     "sine32",
   ];
-  const [dataFetched, setDataFetched] = useState(true); // IN TEST MODE? set to true
-  const [data, setData] = useState(testLocations.alert);
+  const [dataFetched, setDataFetched] = useState(false); // IN TEST MODE? set to true
+  const [data, setData] = useState(testLocations.medellin);
   const [piano, setPiano] = useState(oscillators);
   const [membrane, setMembrane] = useState(makeMembraneSynths(12));
   const zipcodeObject = {
@@ -132,7 +132,7 @@ function App() {
       method: "GET",
       url: `http://api.weatherapi.com/v1/forecast.json?key=${
         import.meta.env.VITE_WEATHER_API_KEY
-      }&q=${randomCoord}&aqi=yes&days=1&hour=1`,
+      }&q=${zipcodeObject.dikoma}&aqi=yes&days=1&hour=1`,
     };
 
     if (!dataFetched)
@@ -214,7 +214,7 @@ function App() {
         (piano as any)[k].start();
         // loop.start(0);
         // signal.rampTo(partial, 10 , 0); // 10 second "performance"
-        signal.rampTo(partial, 1, 0);
+        signal.rampTo(partial, 3600, 0);
       }
     };
     // play all the oscillators
