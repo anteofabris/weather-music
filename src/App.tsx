@@ -96,8 +96,8 @@ function App() {
     "sine31",
     "sine32",
   ];
-  const [dataFetched, setDataFetched] = useState(true); // IN TEST MODE? set to true
-  const [data, setData] = useState(testLocations.alert);
+  const [dataFetched, setDataFetched] = useState(false); // IN TEST MODE? set to true
+  const [data, setData] = useState(testLocations.medellin);
   const [piano, setPiano] = useState(oscillators);
   const [membrane, setMembrane] = useState(makeMembraneSynths(12));
   const zipcodeObject = {
@@ -113,26 +113,26 @@ function App() {
     athensGreece: "37.973105059118026,23.72582305173767",
     lisbon: "38.74205040815735,-9.158257672851823",
     unicamp: "-22.81708446102991,-47.06976315462146",
-    missoula: '46.87326889538417,-113.99859872564059',
+    missoula: "46.87326889538417,-113.99859872564059",
     penicina: "44.80768485089671,9.340974847547246",
     dikoma: "-2.239655926016569,23.358729894245982",
-    finke: '-25.582963962482815,134.5766010717347'
+    finke: "-25.582963962482815,134.5766010717347",
   };
-
+  // generate random coordinates
   function getRandomInRange(from: number, to: number, fixed: number) {
     return (Math.random() * (to - from) + from).toFixed(fixed);
     // .toFixed() returns string, so ' * 1' is a trick to convert to number
-}
-const longitude = getRandomInRange(-180, 180, 14)
-const latitude = getRandomInRange(1, 89, 14)
-const randomCoord: string = `${latitude},${longitude}`
+  }
+  const longitude = getRandomInRange(-180, 180, 14);
+  const latitude = getRandomInRange(1, 89, 14);
+  const randomCoord: string = `${latitude},${longitude}`;
 
   function getWeather() {
     const options = {
       method: "GET",
       url: `http://api.weatherapi.com/v1/forecast.json?key=${
         import.meta.env.VITE_WEATHER_API_KEY
-      }&q=${randomCoord}&aqi=yes&days=1&hour=1`,
+      }&q=${zipcodeObject.dikoma}&aqi=yes&days=1&hour=1`,
     };
 
     if (!dataFetched)
@@ -214,7 +214,7 @@ const randomCoord: string = `${latitude},${longitude}`
         (piano as any)[k].start();
         // loop.start(0);
         // signal.rampTo(partial, 10 , 0); // 10 second "performance"
-        signal.rampTo(partial, 1, 0);
+        signal.rampTo(partial, 3600, 0);
       }
     };
     // play all the oscillators
