@@ -84,7 +84,7 @@ function UserInterface({
     "sine31",
     "sine32",
   ];
-  function play() {
+  function play(seconds: number) {
     // Tone.Destination.dispose()
     const numPitches = 6;
     const midpoint = getMidpoint(weatherData.current.temp_f);
@@ -146,7 +146,7 @@ function UserInterface({
         // }, loopTime);
 
         // play the instrument
-        Tone.Transport.start();
+        // Tone.Transport.start();
         (piano as any)[k].start();
         // loop.start(0);
         // signal.rampTo(partial, 10 , 0); // 10 second "performance"
@@ -172,9 +172,6 @@ function UserInterface({
 
   // rebuild the synth
   async function rebuild() {
-    // for (let k in piano) {
-    //   delete piano[k];
-    // }
     await callSetPiano((weatherData as any).current.uv);
   }
 
@@ -192,6 +189,8 @@ function UserInterface({
       stop();
       await rebuild();
       if (!dataReady) setDataReady(true);
+      let head = document.getElementsByTagName("head")[0];
+      head.normalize();
     } else {
       // load message
       console.log("oopsie");
@@ -199,8 +198,8 @@ function UserInterface({
   }
 
   return (
-    <>
-      <SecondsDial setSeconds={setSeconds} value={seconds} />
+    <div style={{ margin: "20px" }}>
+      <SecondsDial setSeconds={setSeconds} />
       {/* <Info /> */}
       <MapComponent
         getWeatherData={getWeatherData}
@@ -218,7 +217,7 @@ function UserInterface({
           weatherData={weatherData}
         />
       )}
-    </>
+    </div>
   );
 }
 

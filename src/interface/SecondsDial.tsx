@@ -1,76 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from "react";
 
 interface SecondsDialProps {
-    value: number;
-    setSeconds: any;
-
+  setSeconds: (value: number) => void;
 }
 
-const SecondsDial: React.FC<SecondsDialProps> = ({ value, setSeconds }) => {
-    const [isDragging, setIsDragging] = useState(false);
-    const dialRef = useRef<HTMLDivElement>(null);
+const SecondsDial: React.FC<SecondsDialProps> = ({ setSeconds }) => {
+  const [value, setValue] = useState(1);
 
-    const handleMouseDown = () => {
-        setIsDragging(true);
-    };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(event.target.value);
+    setValue(newValue);
+    setSeconds(newValue);
+  };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
-
-    const handleMouseMove = (event: MouseEvent) => {
-        if (!isDragging || !dialRef.current) return;
-
-        const dialRect = dialRef.current.getBoundingClientRect();
-        const dialCenterX = dialRect.left + dialRect.width / 2;
-        const dialCenterY = dialRect.top + dialRect.height / 2;
-        const angle = Math.atan2(event.clientY - dialCenterY, event.clientX - dialCenterX);
-        let newValue = Math.round((angle / (2 * Math.PI)) * 3600);
-
-        if (newValue < 0) {
-            newValue += 3600;
-        } else if (newValue > 3600) {
-            newValue -= 3600;
-        }
-        setSeconds(newValue);
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-
-        return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-        };
-    }, []);
-
-    return (
-        <div
-            ref={dialRef}
-            style={{
-                width: '200px',
-                height: '200px',
-                borderRadius: '50%',
-                backgroundColor: '#f0f0f0',
-                position: 'relative',
-                cursor: 'pointer',
-            }}
-            onMouseDown={handleMouseDown}
-        >
-            <div
-                style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: `translate(-50%, -50%) rotate(${(value / 3600) * 360}deg)`,
-                    width: '4px',
-                    height: '80px',
-                    backgroundColor: '#000',
-                }}
-            />
-        </div>
-    );
+  return (
+    <>
+      <label htmlFor="seconds">{value} Seconds</label>
+      <input
+        style={{ width: "60vw" }}
+        type="range"
+        min={1}
+        max={3600}
+        value={value}
+        onChange={handleChange}
+      />
+    </>
+  );
 };
 
 export default SecondsDial;

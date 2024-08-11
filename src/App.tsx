@@ -51,10 +51,14 @@ const firstPiano = makeOscillators(12, 1, null);
 function App() {
   // SYNTH
   const [piano, setPiano] = useState(firstPiano);
-  //   let piano = makeOscillators(12, 1);
+    // let piano = makeOscillators(12, 1, null);
   function callSetPiano(uv: any) {
     for (let k in piano) {
-        piano[k].disconnect().dispose();
+        piano[k].disconnect().dispose();    
+        delete piano[k]
+        // Tone.Transport.unsyncSignal(piano[k]).clear(piano[k])
+
+        // piano[k].spread = (uv ? uv : 10) / 10
     }
     const newPiano = makeOscillators(12, (uv ? uv : 10) / 10, piano);
     return setPiano(newPiano);

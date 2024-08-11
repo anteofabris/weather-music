@@ -18,9 +18,11 @@ const MapComponent = ({
   return (
     <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <Map
-        style={{ width: "100vw", height: "100vh" }}
+        // style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "70vw", height: "50vh" }}
+        mapTypeId={"satellite"}
         defaultCenter={{ lat: 22.54992, lng: 0 }}
-        defaultZoom={3}
+        defaultZoom={5}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
         onClick={async (e: any) => {

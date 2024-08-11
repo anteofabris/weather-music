@@ -37,7 +37,7 @@ function SynthComponent({
   console.log("trying to play: ");
 
   //   useEffect(() => play(), [weatherData]);
-  play();
+  play(seconds);
 
   return <div></div>;
 }
