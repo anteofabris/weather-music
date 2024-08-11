@@ -1,18 +1,70 @@
-// static interface: a dial, google maps, an info screen and a buttom
-// dial in length and click on a point on map
-// any time the dial is moved, any time a new point is clicked
-  // new synth component is instantiated (after old one is removed)
-  // values are plugged into synth and synth plays
+import * as Tone from "tone";
+import {
+  getAttackLength,
+  getRatesOfAttack,
+  getPitchesPerHand,
+  getAllowedPitches,
+  getMidpoint,
+  getHandCycle,
+  getMomentPhraseLength,
+  getPhraseLength,
+  getChords,
+  getRhythmicProfile,
+  getPitchArrayDistribution,
+  normalize,
+} from "../extraction.ts";
+import {
+  makeChorus,
+  makeAutoFilter,
+  makeLimiter,
+  makeAmpEnv,
+  makeAutoPanner,
+} from "../effects.ts";
 
 import UserInterface from "./interface/index.tsx";
+import { useState } from "react";
 
+function makeOscillators(num: number, spread: number, container: any) {
+  const obj: any = container ? container : {};
+  for (let i = 0; i < num; i++) {
+    obj[i] = new Tone.FatOscillator({
+      volume: -20 - i * i,
+      phase: 0,
+      type: "triangle17",
+      spread: spread,
+    })
+      .connect(
+        new Tone.AmplitudeEnvelope({
+          attack: 1,
+          decay: 1,
+          sustain: 1,
+          release: 1,
+        }).toDestination()
+      )
+      .toDestination();
+  }
+  return obj;
+}
 
-function App () {
-    return (
-        <div>
-            <UserInterface/>
-        </div>
-    );
+const firstPiano = makeOscillators(12, 1, null);
+
+function App() {
+  // SYNTH
+  const [piano, setPiano] = useState(firstPiano);
+  //   let piano = makeOscillators(12, 1);
+  function callSetPiano(uv: any) {
+    for (let k in piano) {
+        piano[k].disconnect().dispose();
+    }
+    const newPiano = makeOscillators(12, (uv ? uv : 10) / 10, piano);
+    return setPiano(newPiano);
+  }
+
+  return (
+    <div>
+      <UserInterface piano={piano} callSetPiano={callSetPiano} />
+    </div>
+  );
 }
 
 export default App;
