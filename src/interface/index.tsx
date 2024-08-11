@@ -185,10 +185,17 @@ function UserInterface({
         import.meta.env.VITE_WEATHER_API_KEY
       }&q=${lat},${lng}&aqi=yes&days=1&hour=1`
     );
-    const data = await response.json();
-    console.log(data);
-    setWeatherData(data);
-    if (!dataReady) setDataReady(true);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      setWeatherData(data);
+      stop();
+      await rebuild();
+      if (!dataReady) setDataReady(true);
+    } else {
+      // load message
+      console.log("oopsie");
+    }
   }
 
   return (

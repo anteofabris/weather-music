@@ -24,12 +24,7 @@ const MapComponent = ({
         gestureHandling={"greedy"}
         disableDefaultUI={true}
         onClick={async (e: any) => {
-          stop();
-          //  respread();
-          await rebuild();
           await getWeatherData(e.detail.latLng.lat, e.detail.latLng.lng);
-          await incrementKeyCounter();
-          //   play();
           console.log(
             "clicked: ",
             `${e.detail.latLng.lat},${e.detail.latLng.lng}`
