@@ -28,9 +28,11 @@ import * as Tone from "tone";
 
 function UserInterface({
   piano,
+  signal,
   callSetPiano,
 }: {
   piano: any;
+  signal: any;
   callSetPiano: any;
 }) {
   // google maps api
@@ -85,7 +87,6 @@ function UserInterface({
     "sine32",
   ];
   function play(seconds: number) {
-    // Tone.Destination.dispose()
     const numPitches = 6;
     const midpoint = getMidpoint(weatherData.current.temp_f);
     const interval = weatherData.current.vis_miles || 1;
@@ -124,32 +125,16 @@ function UserInterface({
         (piano as any)[k].connect(makeAutoFilter(autoFilterOptions));
         (piano as any)[k].connect(makeAutoPanner(autoPanOptions));
         (piano as any)[k].connect(makeLimiter(-20));
-        // membrane[k].connect(makeLimiter(-20));
-
-        // set oscillator params from data
-        // piano[k].set({ frequency: allowedPitches[k as any] });
         (piano as any)[k].set({ type: sineTypesArr[Number(k)] });
 
         // create a signal
-        const signal = new Tone.Signal({
+        let signal = new Tone.Signal({
           value: allowedPitches[k],
           units: "frequency",
         }).connect((piano as any)[k].frequency);
-
-        // const partial = Math.round(allowedPitches[k] / 10) * 10;
         const partial = nearestFundamental * (k + 1);
-        // build the loop
 
-        // const loop = new Tone.Loop(() => {
-        //   console.log("in loop");
-        //   signal.rampTo(allowedPitches[k], loopTime / 2, loopTime / 2);
-        // }, loopTime);
-
-        // play the instrument
-        // Tone.Transport.start();
         (piano as any)[k].start();
-        // loop.start(0);
-        // signal.rampTo(partial, 10 , 0); // 10 second "performance"
         signal.rampTo(partial, seconds, 0);
       }
     };
@@ -160,8 +145,6 @@ function UserInterface({
     for (let k in piano) {
       piano[k].sync().stop();
     }
-    // update key
-    // incrementKeyCounter();
   }
   function respread() {
     for (let k in piano) {

@@ -46,22 +46,35 @@ function makeOscillators(num: number, spread: number, container: any) {
   return obj;
 }
 
+function makeSignals(num: number, container: any) {
+  const obj: any = container ? container : {};
+  for (let i = 0; i < num; i++) {
+    obj[i] = new Tone.Signal();
+  }
+  return obj;
+}
+
 const firstPiano = makeOscillators(12, 1, null);
+const firstSignals = makeSignals(12, null);
 
 function App() {
   // SYNTH
   const [piano, setPiano] = useState(firstPiano);
-    // let piano = makeOscillators(12, 1, null);
-  function callSetPiano(uv: any) {
+  const [signals, setSignals] = useState(firstSignals);
+  async function callSetPiano(uv: any) {
     for (let k in piano) {
-        piano[k].disconnect().dispose();    
-        delete piano[k]
-        // Tone.Transport.unsyncSignal(piano[k]).clear(piano[k])
-
-        // piano[k].spread = (uv ? uv : 10) / 10
+      piano[k].disconnect().dispose();
+      delete piano[k];
+    }
+    for (let k in signals) {
+      signals[k].disconnect().dispose();
+      delete signals[k];
     }
     const newPiano = makeOscillators(12, (uv ? uv : 10) / 10, piano);
-    return setPiano(newPiano);
+    const newSignals = makeSignals(12, signals);
+    setPiano(newPiano);
+    setSignals(newSignals);
+    return;
   }
 
   return (
