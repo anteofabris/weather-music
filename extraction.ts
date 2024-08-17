@@ -99,7 +99,7 @@ const getPitchArrayDistribution = (
   numPitches: number
 ) => {
   // return an array of integers
-  console.log("midpoint: ", midpoint);
+  // console.log("midpoint: ", midpoint);
   // take input n and operae with PI to spread values across spectrum
   const lh = [];
   const rh = [];
@@ -107,7 +107,7 @@ const getPitchArrayDistribution = (
     lh.push(midpoint / (Math.PI * (interval + i)) || 27.5);
     rh.push((midpoint + (interval + i) * Math.PI || 4680.1)/8)
   }
-  console.log("pitcharray dist ", [...lh], numPitches);
+  // console.log("pitcharray dist ", [...lh], numPitches);
   return [...lh];
 };
 

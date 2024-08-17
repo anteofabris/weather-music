@@ -25,6 +25,7 @@ import UserInterface from "./interface/index.tsx";
 import { useState } from "react";
 
 function makeOscillators(num: number, spread: number, container: any) {
+  console.log("make?", spread);
   const obj: any = container ? container : {};
   for (let i = 0; i < num; i++) {
     obj[i] = new Tone.FatOscillator({
@@ -56,7 +57,6 @@ function makeSignals(num: number, container: any) {
 
 const firstPiano = makeOscillators(12, 1, null);
 const firstSignals = makeSignals(12, null);
-
 function App() {
   // SYNTH
   const [piano, setPiano] = useState(firstPiano);
@@ -70,7 +70,8 @@ function App() {
       signals[k].disconnect().dispose();
       delete signals[k];
     }
-    const newPiano = makeOscillators(12, (uv ? uv : 10) / 10, piano);
+    console.log("UV: ", uv);
+    const newPiano = makeOscillators(12, uv / 10, piano);
     const newSignals = makeSignals(12, signals);
     setPiano(newPiano);
     setSignals(newSignals);

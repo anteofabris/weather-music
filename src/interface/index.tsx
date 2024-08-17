@@ -28,11 +28,9 @@ import * as Tone from "tone";
 
 function UserInterface({
   piano,
-  signal,
   callSetPiano,
 }: {
   piano: any;
-  signal: any;
   callSetPiano: any;
 }) {
   const [seconds, setSeconds] = useState(3600);
@@ -89,7 +87,6 @@ function UserInterface({
     const loopTime = getRatesOfAttack(weatherData.current.pressure_mb)[2];
     const nearestFundamental = Math.round(allowedPitches[0] / 10) * 10;
     const makeSound = () => {
-      console.log("makiung sound: ", piano);
       for (let k = 0; k < allowedPitches.length; k++) {
         // declare scope variables from weatherData
         const filterFreq = normalize(
@@ -130,6 +127,7 @@ function UserInterface({
       }
     };
     // play all the oscillators
+    console.log("PLAYING: ", piano);
     makeSound();
   }
   function stop() {
@@ -137,16 +135,22 @@ function UserInterface({
       piano[k].sync().stop();
     }
   }
-  function respread() {
+  function respread(weatherData: any) {
+    const newSpread = weatherData.current.uv / 10;
+    console.log(
+      "spread numenator: ",
+      weatherData.current.uv,
+      weatherData.location.name,
+      newSpread
+    );
     for (let k in piano) {
-      piano[k].spread =
-        (weatherData ? (weatherData as any).current.uv : 10) / 10;
+      piano[k].spread = newSpread;
     }
   }
 
   // rebuild the synth
-  async function rebuild() {
-    await callSetPiano((weatherData as any).current.uv);
+  async function rebuild(uv: number) {
+    await callSetPiano(uv);
   }
 
   // WEATHER DATA
@@ -160,11 +164,10 @@ function UserInterface({
       const data = await response.json();
       console.log(data);
       setWeatherData(data);
+      respread(data);
       stop();
-      await rebuild();
+      await rebuild(data.current.uv);
       if (!dataReady) setDataReady(true);
-      let head = document.getElementsByTagName("head")[0];
-      head.normalize();
     } else {
       // load message
       console.log("oopsie");
@@ -173,15 +176,9 @@ function UserInterface({
 
   return (
     <div style={{ margin: "20px" }}>
-      <SecondsDial setSeconds={setSeconds} />
+      <SecondsDial seconds={seconds} setSeconds={setSeconds} />
       {/* <Info /> */}
-      <MapComponent
-        getWeatherData={getWeatherData}
-        incrementKeyCounter={incrementKeyCounter}
-        stop={stop}
-        respread={respread}
-        rebuild={rebuild}
-      />
+      <MapComponent getWeatherData={getWeatherData} />
       {dataReady && <SynthComponent play={play} seconds={seconds} />}
     </div>
   );
