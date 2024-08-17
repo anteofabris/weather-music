@@ -25,13 +25,9 @@ import { useEffect, useState } from "react";
 
 function SynthComponent({
   seconds,
-  weatherData,
-  keyCounter,
   play,
 }: {
   seconds: any;
-  weatherData: any;
-  keyCounter: any;
   play: any;
 }) {
   console.log("trying to play: ");

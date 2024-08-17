@@ -35,15 +35,6 @@ function UserInterface({
   signal: any;
   callSetPiano: any;
 }) {
-  // google maps api
-  // seconds dial
-
-  // <UserPlaySurface/>
-  // <SecondsDial/>
-  // <Info/>
-  // <MapComponent/>
-  // <GenerationButton/>
-  //
   const [seconds, setSeconds] = useState(3600);
   const [weatherData, setWeatherData] = useState(testLocations.medellin);
   const [dataReady, setDataReady] = useState(false);
@@ -191,15 +182,7 @@ function UserInterface({
         respread={respread}
         rebuild={rebuild}
       />
-      {dataReady && (
-        <SynthComponent
-          play={play}
-          seconds={seconds}
-          key={keyCounter}
-          keyCounter={keyCounter}
-          weatherData={weatherData}
-        />
-      )}
+      {dataReady && <SynthComponent play={play} seconds={seconds} />}
     </div>
   );
 }

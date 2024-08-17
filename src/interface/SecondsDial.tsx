@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
 interface SecondsDialProps {
+  seconds: number;
   setSeconds: (value: number) => void;
 }
 
-const SecondsDial: React.FC<SecondsDialProps> = ({ setSeconds }) => {
-  const [value, setValue] = useState(1);
+const SecondsDial: React.FC<SecondsDialProps> = ({ seconds, setSeconds }) => {
+  const [value, setValue] = useState(3600);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value);
