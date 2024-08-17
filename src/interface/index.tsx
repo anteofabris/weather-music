@@ -25,6 +25,7 @@ import {
   makeAutoPanner,
 } from "../../effects.ts";
 import * as Tone from "tone";
+import Info from "./Info.tsx";
 
 function UserInterface({
   piano,
@@ -176,8 +177,8 @@ function UserInterface({
 
   return (
     <div style={{ margin: "20px" }}>
+      <Info weatherData={weatherData} />
       <SecondsDial seconds={seconds} setSeconds={setSeconds} />
-      {/* <Info /> */}
       <MapComponent getWeatherData={getWeatherData} />
       {dataReady && <SynthComponent play={play} seconds={seconds} />}
     </div>

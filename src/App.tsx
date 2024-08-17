@@ -25,7 +25,6 @@ import UserInterface from "./interface/index.tsx";
 import { useState } from "react";
 
 function makeOscillators(num: number, spread: number, container: any) {
-  console.log("make?", spread);
   const obj: any = container ? container : {};
   for (let i = 0; i < num; i++) {
     obj[i] = new Tone.FatOscillator({
