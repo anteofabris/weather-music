@@ -177,7 +177,8 @@ function UserInterface({
 
   return (
     <div style={{ margin: "20px" }}>
-      <Info weatherData={weatherData} />
+      {!dataReady && <Info weatherData={null} />}
+      {dataReady && <Info weatherData={weatherData} />}
       <SecondsDial seconds={seconds} setSeconds={setSeconds} />
       <MapComponent getWeatherData={getWeatherData} />
       {dataReady && <SynthComponent play={play} seconds={seconds} />}
